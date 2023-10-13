@@ -23,7 +23,7 @@ public class FilterTaskAuth extends OncePerRequestFilter {
     protected void doFilterInternal(@org.jetbrains.annotations.NotNull HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var servletPath = request.getServletPath();
 
-        if (servletPath.equals("/tasks/")) {
+        if (servletPath.startsWith("/tasks/")) {
             var authorization = request.getHeader("Authorization");
             var user_password = authorization.substring("Basic".length()).trim();
 

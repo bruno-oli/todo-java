@@ -1,5 +1,6 @@
 package br.com.brunomax.todolist.task;
 
+import br.com.brunomax.todolist.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,5 +43,15 @@ public class TaskController {
         var tasks = this.taskRepository.findByUserId((UUID) userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(tasks);
+    }
+
+    @PutMapping("/{id}")
+    public TaskModel update(@RequestBody TaskModel taskModel, HttpServletRequest request, @PathVariable UUID id) {
+        var task = this.taskRepository.findById(id).orElse(null);
+
+        Utils.copyNonNullProperties(taskModel, task);
+
+        assert task != null;
+        return this.taskRepository.save(task);
     }
 }
